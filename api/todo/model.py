@@ -1,6 +1,5 @@
 from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute, BooleanAttribute
-from datetime import datetime, timezone, timedelta
+from pynamodb.attributes import UnicodeAttribute, BooleanAttribute
 
 class TodoModel(Model):
     class Meta:
