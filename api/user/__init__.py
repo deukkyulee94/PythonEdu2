@@ -27,18 +27,18 @@ password_field = fields.String(
     min_length=4
 )
 
-signup_request = user_api.model('signupRequest', {
+signup_request = user_api.model('signup_request', {
     'email': email_field,
     'name': name_field,
     'password': password_field
 })
 
-signin_request = user_api.model('loginRequest', {
+signin_request = user_api.model('login_request', {
     'email': email_field,
     'password': password_field
 })
 
-response = user_api.model('responseModel', {
+response = user_api.model('user_response_model', {
     'status': fields.Raw(required=True, description='응답 상태'),
     'message': fields.String(required=True, description='응답 메시지'),
     'data': fields.Raw(drequired=True, description='응답 데이터'),

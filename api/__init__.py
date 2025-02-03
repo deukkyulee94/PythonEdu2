@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restx import Api
 from api.user import controller, user_api
+from api.todo import controller, todo_api
 from flask_jwt_extended import JWTManager
 
 def create_app():
@@ -28,6 +29,7 @@ def create_app():
 
     # add namespace
     api.add_namespace(user_api)
+    api.add_namespace(todo_api)
 
     # JWT Config
     jwt = JWTManager()

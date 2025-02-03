@@ -1,7 +1,6 @@
 from api.user.model import UserModel
 from http import HTTPStatus
 from api.helper.jwt_helper import util_jwt_create_access_token
-from pynamodb.expressions.condition import Condition
 
 def signup(data):
     """model을 사용한 signup"""
