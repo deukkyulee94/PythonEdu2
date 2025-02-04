@@ -12,6 +12,15 @@ class TodoModel(Model):
     state = BooleanAttribute(default=False)
     created = UnicodeAttribute()
 
+    def to_dict(self):
+        return {
+            'todo_id': self.todo_id,
+            'email': self.email,
+            'todo': self.todo,
+            'state': self.state,
+            'created': self.created
+        }
+
 # KST 기준 시간 저장
 
 # 테이블이 존재하지 않으면 생성
