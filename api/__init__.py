@@ -1,5 +1,7 @@
+import os
 from flask import Flask
 from flask_restx import Api
+from api.config import config_object
 from api.user import controller, user_api
 from api.todo import controller, todo_api
 from flask_jwt_extended import JWTManager
@@ -32,6 +34,8 @@ def create_app():
     api.add_namespace(todo_api)
 
     # JWT Config
+    config_name = os.getenv('TEMP_FLASK_ENV', 'default')
+    app.config.from_object(config_object[config_name])
     jwt = JWTManager()
     jwt.init_app(app)
 
