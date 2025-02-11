@@ -5,49 +5,48 @@ from flask_jwt_extended import get_jwt_identity
 from api.todo.model import TodoModel
 from http import HTTPStatus
 from datetime import datetime
+from api.helper.error_handler import APIException
 
 kst = pytz.timezone('Asia/Seoul')
 
 def get_list():
     """model을 사용한 할 일 리스트 조회"""
 
-    todos = []
-    filter_condition = None
-    filter_condition &= (TodoModel.email == get_jwt_identity())
-    for todo in TodoModel.scan(filter_condition):
-        print(f'[service] get_list ::: todo => {todo}')
-        todos.append(todo.to_simple_dict())
-
-    return {
-        'status': HTTPStatus.OK,
-        'message': '조회 성공',
-        'data': todos
-    }
+    try:
+        filter_condition = TodoModel.email == get_jwt_identity()
+        todos = [todo.to_simple_dict() for todo in TodoModel.scan(filter_condition)]
+        
+        return {
+            'status': HTTPStatus.OK,
+            'message': '조회 성공',
+            'data': todos
+        }
+    except Exception as e:
+        raise APIException(HTTPStatus.INTERNAL_SERVER_ERROR, str(e))
 
 
 def create(data):
     """model을 사용한 create"""
 
-    now = datetime.now(kst)
-    formatted_datetime = now.strftime('%Y-%m-%d %H:%M')
-
-    print(f'[service] create ::: payload => {data}')
-    todo = TodoModel(
-        todo_id=str(uuid.uuid4()),
-        email=get_jwt_identity(),
-        todo=data.get('todo'),
-        created= formatted_datetime,
-        state=False
-    )
-
-    save_response = todo.save()
-    print(f'[service] create ::: save_response => {save_response}')
-
-    return {
-        'status': HTTPStatus.CREATED,
-        'message': '생성 성공',
-        'data': todo.to_simple_dict()
-    }
+    try:
+        now = datetime.now(kst).strftime('%Y-%m-%d %H:%M')
+        
+        todo = TodoModel(
+            todo_id=str(uuid.uuid4()),
+            email=get_jwt_identity(),
+            todo=data.get('todo'),
+            created=now,
+            state=False
+        )
+        
+        todo.save()
+        return {
+            'status': HTTPStatus.CREATED,
+            'message': '생성 성공',
+            'data': todo.to_simple_dict()
+        }
+    except Exception as e:
+        raise APIException(HTTPStatus.INTERNAL_SERVER_ERROR, str(e))
 
 def get_item(todo_id):
     """model을 사용한 할 일 조회"""
