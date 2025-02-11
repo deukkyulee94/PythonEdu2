@@ -42,10 +42,18 @@ def signin(data):
     user = UserModel.scan(filter_condition)
 
     if len(list(user)) == 1:
+        user_name = None
+        for user in UserModel.scan(filter_condition):
+            if user is not None:
+                user_name = user.name
+
         return {
             'status': HTTPStatus.OK,
             'message': '로그인 성공',
-            'data': {'token': 'Bearer ' + util_jwt_create_access_token(identity=email)}
+            'data': {
+                'token': 'Bearer ' + util_jwt_create_access_token(identity=email),
+                'name' : user_name
+            }
         }
     else:
 

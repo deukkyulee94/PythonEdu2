@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restx import Api
+from flask_cors import CORS
 from api.user import controller, user_api
 from api.todo import controller, todo_api
 from flask_jwt_extended import JWTManager
@@ -34,5 +35,6 @@ def create_app():
     # JWT Config
     jwt = JWTManager()
     jwt.init_app(app)
+    CORS(app)
 
     return app

@@ -28,7 +28,6 @@ state_field = fields.Boolean(
 )
 
 create_request = todo_api.model('create_request', {
-    'email': email_field,
     'todo': todo_field
 })
 
