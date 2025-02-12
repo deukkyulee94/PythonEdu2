@@ -1,0 +1,9 @@
+aws_utils/
+    ├── __init__.py
+    ├── exceptions.py
+    ├── services/
+    │   ├── __init__.py
+    │   ├── s3.py
+    │   ├── ses.py
+    │   └── ssm.py
+    └── manager.py 
